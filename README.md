@@ -33,6 +33,8 @@ After that, you may find a release in `./target/xp_build`
  - [] Windows Vista x64
  - [] Only VC-LTL
 
+Note: Currently, thunk only supports Windows XP x86. It does not have any arguments.
+
 # Thanks
  
  - [VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5)
