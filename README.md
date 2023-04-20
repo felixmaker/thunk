@@ -28,10 +28,10 @@ After that, you may find a release in `./target/xp_build`
 # Todo list
 
  - [x] Windows XP x86
- - [] Windows XP x64
- - [] Windows Vista x86
- - [] Windows Vista x64
- - [] Only VC-LTL
+ - [ ] Windows XP x64
+ - [ ] Windows Vista x86
+ - [ ] Windows Vista x64
+ - [ ] Only VC-LTL
 
 Note: Currently, thunk only supports Windows XP x86. It does not have any arguments.
 
