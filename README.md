@@ -20,18 +20,43 @@ Then, it's the time to use thunk.
 ```
 cargo new build_for_xp
 cd build_for_xp
-thunk
+thunk --os xp --arch x86 --release
 ```
 
-After that, you may find a release in `./target/xp_build`
+After that, you may find a release in `./target/winxp_build`
+
+# Usage
+```
+Use Thunk to build your Rust program that runs on old platforms
+
+Usage: thunk.exe [OPTIONS]
+
+Options:
+  -v, --vc-ltl-path <VC_LTL_PATH>
+          VC-LTL folder, you may get it from https://github.com/Chuyu-Team/VC-LTL5/releases
+      --enable-thunks
+          Enable YY-Thunks to support Windows Vista or XP
+  -y, --yy-thunks-path <YY_THUNKS_PATH>
+          YY-Thunks folder, you may get it from https://github.com/Chuyu-Team/YY-Thunks/releases
+  -o, --os <OS>
+          Operating system names: xp, vista, win7, win10, 20h1
+  -a, --arch <ARCH>
+          Operating system arch: x86, x64, arm64
+  -s, --subsystem <SUBSYSTEM>
+          Link arg: console, windows
+      --release
+          Release build
+  -h, --help
+          Print help
+```
 
 # Todo list
 
  - [x] Windows XP x86
- - [ ] Windows XP x64
- - [ ] Windows Vista x86
- - [ ] Windows Vista x64
- - [ ] Only VC-LTL
+ - [x] Windows XP x64
+ - [x] Windows Vista x86
+ - [x] Windows Vista x64
+ - [x] Only VC-LTL
 
 Note: Currently, thunk only supports Windows XP x86. It does not have any arguments.
 
