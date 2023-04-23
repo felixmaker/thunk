@@ -7,7 +7,7 @@ Thunk uses [VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5) and [YY-Thunks](http
 
 Note: Thunk do not guarantee the compiled program work or work accurately on old platform. USE AT YOUR OWN RISK!
 
-In order to distinguish the program build by thunks, thunk build the release in it `./target/*_build`.
+In order to distinguish the program build by thunks, thunk build the release in `./target/*_build`.
 
 # How to use?
 
@@ -58,7 +58,6 @@ Options:
  - [x] Windows Vista x64
  - [x] Only VC-LTL
 
-Note: Currently, thunk only supports Windows XP x86. It does not have any arguments.
 
 # Thanks
  
