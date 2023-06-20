@@ -24,13 +24,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           RUSTTARGET: ${{ matrix.target }}
+          TOOLCHAIN_VERSION: stable
           EXTRA_FILES: "README.md readme-chinese.md LICENSE"
           ARCHIVE_TYPES: ${{ matrix.archive }}
-          UPLOAD_MODE: none
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: Binary
-          path: |
-            ${{ steps.compile.outputs.BUILT_ARCHIVE }}
-            ${{ steps.compile.outputs.BUILT_CHECKSUM }}
+          UPLOAD_MODE: release
