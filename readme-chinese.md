@@ -1,6 +1,6 @@
 # 使用 Thunk 帮助你编译能在 Windows XP 上运行的 Rust 程序
 
-Thunk 主要帮你做了两件事：
+Thunk 主要帮你做了下面两件事：
 
  - 将 [VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5) 添加到库搜索路径中
  - 额外链接 [YY-Thunks](https://github.com/Chuyu-Team/YY-Thunks)，以弥补 Vista 和 XP 上没有的 API
@@ -12,7 +12,7 @@ Thunk 主要帮你做了两件事：
 
 # 使用方法
 
-## 准备工作
+## 准备工作（手动）
 
 下载 VC-LTL5、 YY-Thunks Binary 文件，解压，并添加环境变量：
 
@@ -21,7 +21,11 @@ Thunk 主要帮你做了两件事：
 | VC-LTL-5.0.6-Beta5-Binary.7z | VC_LTL |
 | YY-Thunks-1.0.7-Beta4-Binary.zip | YY_Thunks |
 
-再将 Thunk 添加到环境变量。或者直接通过 Scoop 包管理器安装（未完成！）：
+再将 Thunk 添加到环境变量。
+
+## 准备工作（Scoop）
+
+你也可以直接通过 Scoop 包管理器安装：
 
 ```
 scoop bucket add felixmaker 'https://github.com/felixmaker/scoop-felixmaker'
@@ -43,13 +47,30 @@ cd build_for_xp
 thunk --os xp --arch x86 --release
 ```
 
-编译结果可以在 `./target/winxp_build` 文件夹找到
+## 示例 2 编译一个可以在 XP 上使用的动态链接库
+
+```
+cargo new build_for_xp
+cd build_for_xp
+thunk --os xp --arch x86 --lib -- --release
+```
+
 
 ## 更多用法请查看帮助
 
 ```
 thunk.exe --help
 ```
+
+
+| 参数 | 说明 | 可能值 |
+| --- | --- | --- |
+| --os | 系统名称 | xp, vista, win7, win10, 20h1 |
+| --arch | 系统架构 | x86, x64, arm64 |
+| --lib | 是否为共享库，指定时 subsystem 将被忽略 | - |
+| --subsystem | 设置 subsystem | console, windows |
+| -- | 传到 cargo build 后面 | 自定义 |
+
 
 
 # 任务清单
@@ -59,7 +80,7 @@ thunk.exe --help
  - [x] Windows Vista x86
  - [x] Windows Vista x64
  - [x] Only VC-LTL
-
+ - [] Scoop bucket
 
 
 # 致谢

@@ -1,4 +1,4 @@
-# Use Thunk to build your Rust program that runs on old platforms.
+# Use Thunk to build your Rust program that runs on old Windows platforms
 
 [中文自述文件](./readme-chinese.md)
 
@@ -13,7 +13,7 @@ In order to distinguish the program build by Thunk, Thunk builds the release in 
 
 # How to use?
 
-## Preparation
+## Preparation (Manual)
 
 Download VC-LTL5 and YY-Thunks Binary, unzip them and add environment variable:
 
@@ -22,7 +22,11 @@ Download VC-LTL5 and YY-Thunks Binary, unzip them and add environment variable:
 | VC-LTL-5.0.6-Beta5-Binary.7z | VC_LTL |
 | YY-Thunks-1.0.7-Beta4-Binary.zip | YY_Thunks |
 
-Then add Thunk to run path. Or you can just install with scoop (todo!):
+Then add Thunk to run path. 
+
+## Preparation (Scoop)
+
+You can just install with scoop:
 
 ```
 scoop bucket add felixmaker 'https://github.com/felixmaker/scoop-felixmaker'
@@ -34,10 +38,16 @@ scoop install felixmaker/thunk
 ```
 cargo new build_for_xp
 cd build_for_xp
-thunk --os xp --arch x86 --release
+thunk --os xp --arch x86 -- --release
 ```
 
-Then, you may find release in `./target/winxp_build`
+## Sample 2. Build a shared library for Windows XP
+
+```
+cargo new build_for_xp
+cd build_for_xp
+thunk --os xp --arch x86 --lib -- --release
+```
 
 ## Show help
 
@@ -55,6 +65,7 @@ thunk.exe --help
  - [x] Windows Vista x86
  - [x] Windows Vista x64
  - [x] Only VC-LTL
+ - [] Scoop bucket
 
 
 # Thanks
