@@ -19,8 +19,8 @@ Download VC-LTL5 and YY-Thunks Binary, unzip them and add environment variable:
 
 | Binary | Environment Variable |
 | --- | ---|
-| VC-LTL-5.0.6-Beta5-Binary.7z | VC_LTL |
-| YY-Thunks-1.0.7-Beta4-Binary.zip | YY_Thunks |
+| VC-LTL-5.0.8-Beta2-Binary.7z | VC_LTL |
+| YY-Thunks-1.0.8-Beta4-Binary.zip | YY_Thunks |
 
 Then add Thunk to run path. 
 
@@ -65,7 +65,7 @@ thunk.exe --help
  - [x] Windows Vista x86
  - [x] Windows Vista x64
  - [x] Only VC-LTL
- - [] Scoop bucket
+ - [ ] Scoop bucket
 
 
 # Thanks
