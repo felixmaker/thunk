@@ -16,10 +16,10 @@ jobs:
           - target: x86_64-pc-windows-gnu
             archive: zip
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - name: Compile
         id: compile
-        uses: rust-build/rust-build.action@1.4.3
+        uses: rust-build/rust-build.action@v1.4.3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
