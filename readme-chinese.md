@@ -80,7 +80,7 @@ thunk.exe --help
  - [x] Windows Vista x86
  - [x] Windows Vista x64
  - [x] Only VC-LTL
- - [ ] Scoop bucket
+ - [x] Scoop bucket
 
 
 # 致谢
