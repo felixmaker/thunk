@@ -21,13 +21,13 @@ pub struct ThunkBuilder {
     /// Operating system arch: x86, x64, arm64
     #[arg(short, long)]
     arch: Option<Arch>,
-    /// Build Shared Library? If true, subsystem will not work!
+    /// To build a shared library
     #[arg(long, value_name = "IS_LIB")]
     lib: bool,
     /// Link arg: console, windows
     #[arg(short, long)]
     subsystem: Option<Subsystem>,
-    /// Args pass to cargo, cargo build -- <CARGO_ARGS>
+    /// Args pass to cargo: cargo build <CARGO_ARGS>
     #[arg(last = true, value_name = "CARGO_ARGS")]
     cargo_args: Vec<String>,
 }

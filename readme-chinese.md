@@ -35,7 +35,7 @@ scoop install felixmaker/thunk
 国内加速下载：
 
 ```
-scoop bucket add sfm-cn 'https://github.com/felixmaker/sfm-cn'
+scoop bucket add sfm-cn 'https://ghproxy.com/github.com/felixmaker/sfm-cn'
 scoop install sfm-cn/thunk
 ```
 
@@ -44,7 +44,7 @@ scoop install sfm-cn/thunk
 ```
 cargo new build_for_xp
 cd build_for_xp
-thunk --os xp --arch x86 --release
+thunk --os xp --arch x86 -- --release
 ```
 
 ## 示例 2 编译一个可以在 XP 上使用的动态链接库
@@ -69,7 +69,7 @@ thunk.exe --help
 | --arch | 系统架构 | x86, x64, arm64 |
 | --lib | 是否为共享库，指定时 subsystem 将被忽略 | - |
 | --subsystem | 设置 subsystem | console, windows |
-| -- | 传到 cargo build 后面 | 自定义 |
+| -- | -- 后面的参数会传到 cargo build 后面 | 自定义 |
 
 
 
