@@ -19,7 +19,7 @@ Thunk 主要帮你做了下面两件事：
 | Binary | 环境变量 |
 | --- | ---|
 | VC-LTL-5.0.8-Beta2-Binary.7z | VC_LTL |
-| YY-Thunks-1.0.8-Beta4-Binary.zip | YY_Thunks |
+| YY-Thunks-1.0.8-Beta4-Binary.zip | YY_THUNKS |
 
 再将 Thunk 添加到环境变量。
 

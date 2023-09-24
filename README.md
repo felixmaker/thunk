@@ -20,7 +20,7 @@ Download VC-LTL5 and YY-Thunks Binary, unzip them and add environment variable:
 | Binary | Environment Variable |
 | --- | ---|
 | VC-LTL-5.0.8-Beta2-Binary.7z | VC_LTL |
-| YY-Thunks-1.0.8-Beta4-Binary.zip | YY_Thunks |
+| YY-Thunks-1.0.8-Beta4-Binary.zip | YY_THUNKS |
 
 Then add Thunk to run path. 
 
