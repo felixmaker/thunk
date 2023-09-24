@@ -1,10 +1,6 @@
 use anyhow::anyhow;
 use clap::Parser;
-use std::{
-    collections::HashMap,
-    path::PathBuf,
-    process::Command,
-};
+use std::{collections::HashMap, path::PathBuf, process::Command};
 
 mod sys;
 use sys::*;
@@ -15,16 +11,16 @@ const ENV_VAR_YY_THUNKS: &str = "YY_THUNKS";
 /// Use Thunk to build your Rust program that runs on old Windows platforms.
 #[derive(Debug, Parser)]
 pub struct ThunkBuilder {
-    /// Operating system: xp, vista, win7, win10, 20h1
+    /// Operating system: xp, vista, win7, win10, 20h1 (dafault: win7)
     #[arg(short, long, value_name = "OS")]
     os: Option<OS>,
-    /// Operating system arch: x86, x64, arm64
+    /// Operating system arch: x86, x64, arm64 (dafault: current os arch)
     #[arg(short, long)]
     arch: Option<Arch>,
     /// To build a shared library
     #[arg(long, value_name = "IS_LIB")]
     lib: bool,
-    /// Link arg: console, windows
+    /// Link arg: console, windows (default: console)
     #[arg(short, long)]
     subsystem: Option<Subsystem>,
     /// Args pass to cargo: cargo build <CARGO_ARGS>
@@ -37,9 +33,9 @@ impl ThunkBuilder {
         let env_vars: HashMap<String, String> = std::env::vars().collect();
 
         let mut vc_ltl = {
-            let vc_ltl_env_path = env_vars
-                .get(ENV_VAR_VC_LTL5)
-                .ok_or_else(|| anyhow!("You need to set {} environment variable.", ENV_VAR_VC_LTL5))?;
+            let vc_ltl_env_path = env_vars.get(ENV_VAR_VC_LTL5).ok_or_else(|| {
+                anyhow!("You need to set {} environment variable.", ENV_VAR_VC_LTL5)
+            })?;
             PathBuf::from(vc_ltl_env_path)
         };
 
@@ -49,7 +45,9 @@ impl ThunkBuilder {
             arch_from_args
         } else {
             let un_arch = self.arch.unwrap_or(get_default_arch()?);
-            let target = un_arch.to_rust_target().ok_or_else(|| anyhow!("arch {} fail translate to target", un_arch.to_string()))?;
+            let target = un_arch
+                .to_rust_target()
+                .ok_or_else(|| anyhow!("arch {} fail translate to target", un_arch.to_string()))?;
             self.cargo_args.extend(["--target".to_owned(), target]);
             un_arch
         };
@@ -62,19 +60,16 @@ impl ThunkBuilder {
         let os_version =
             get_os_version(os, arch).ok_or_else(|| anyhow!("failed to get os version"))?;
 
-        let is_lib = {
-            get_is_lib_from_args(self.cargo_args.as_slice()) || self.lib
-        };
-            
+        let is_lib = { get_is_lib_from_args(self.cargo_args.as_slice()) || self.lib };
+
+        let mut subsystem = Some(self.subsystem.unwrap_or(Subsystem::Console));
+
         if is_lib {
-            self.subsystem = None;
+            subsystem = None;
         }
-        
-        let subsystem_args = self.subsystem.map(|x| format!(
-            "-Clink-args=/SUBSYSTEM:{},{}",
-            x.to_string(),
-            os_version
-        ));
+
+        let subsystem_args =
+            subsystem.map(|x| format!("-Clink-args=/SUBSYSTEM:{},{}", x.to_string(), os_version));
 
         let mut rust_flags = vec!["-L".into(), format!("{}", vc_ltl.to_string_lossy())];
 
@@ -86,7 +81,10 @@ impl ThunkBuilder {
             OS::WindowsXP | OS::WindowsVista => {
                 let mut thunks = {
                     let yy_thunks_env_path = env_vars.get(ENV_VAR_YY_THUNKS).ok_or_else(|| {
-                        anyhow!("You need to set {} environment variable.", ENV_VAR_YY_THUNKS)
+                        anyhow!(
+                            "You need to set {} environment variable.",
+                            ENV_VAR_YY_THUNKS
+                        )
                     })?;
                     PathBuf::from(yy_thunks_env_path)
                 };
@@ -97,7 +95,7 @@ impl ThunkBuilder {
             }
             _ => None,
         };
-        
+
         if let Some(obj) = thunks_obj {
             rust_flags.push(format!("-Clink-args={}", obj.to_string_lossy()));
         }
