@@ -1,29 +1,50 @@
-name: Build&Publish
+name: Release
+
+permissions: write-all
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - 'v*.*.*'
 
 jobs:
   release:
-    name: release ${{ matrix.target }}
-    runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
       matrix:
         include:
-          - target: x86_64-pc-windows-gnu
-            archive: zip
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            code-target: win32-x64
+            binary_postfix: ".exe"
+          - os: windows-latest
+            target: i686-pc-windows-msvc
+            code-target: win32-ia32
+            binary_postfix: ".exe"
+    name: release for ${{ matrix.target }}
+    runs-on: ${{ matrix.os }}
     steps:
+      - id: get_version
+        uses: battila7/get-version-action@v2
+      - name: Configure Rust Target
+        run: |
+          rustup update
+          rustup target add ${{ matrix.target }}
       - uses: actions/checkout@v3
-      - name: Compile
-        id: compile
-        uses: rust-build/rust-build.action@v1.4.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build release for ${{ matrix.target }}
+        run: cargo build --release --target=${{ matrix.target }}
+      - name: Packaging binary
+        run: |
+          7z a thunk-${{ steps.get_version.outputs.version }}-${{ matrix.code-target }}.zip ./target/${{ matrix.target }}/release/thunk${{ matrix.binary_postfix }} ./LICENSE ./README.md ./readme-chinese.md
+      - name: Calculate Sha256 (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        run: |
+          sha256sum thunk-${{ steps.get_version.outputs.version }}-${{ matrix.code-target }}.zip > thunk-${{ steps.get_version.outputs.version }}-${{ matrix.code-target }}.zip.sha256sum
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          RUSTTARGET: ${{ matrix.target }}
-          TOOLCHAIN_VERSION: stable
-          EXTRA_FILES: "README.md readme-chinese.md LICENSE"
-          ARCHIVE_TYPES: ${{ matrix.archive }}
-          UPLOAD_MODE: release
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: thunk-*.zip*
+          file_glob: true
+          tag: ${{ github.ref }}
+          overwrite: true
