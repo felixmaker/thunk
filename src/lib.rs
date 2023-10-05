@@ -75,6 +75,10 @@ impl ThunkBuilder {
 
         if let Some(args) = subsystem_args {
             rust_flags.push(args.into());
+
+            if let Some(Subsystem::Windows) = subsystem {
+                rust_flags.push("-Clink-args=/ENTRY:mainCRTStartup".into())
+            }
         }
 
         let thunks_obj = match os {
