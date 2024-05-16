@@ -21,17 +21,17 @@ pub struct Thunk {
 impl Thunk {
     /// Thunk the Rust program. Call it in build script.
     pub fn thunk(&self) {
-        println!("cargo::warning=VC_LTL Enabled: {}", self.vc_ltl_path);
+        println!("cargo::warning=VC-LTL5 Enabled: {}", self.vc_ltl_path);
         println!("cargo::rustc-link-search={}", self.vc_ltl_path);
 
         if let Some(yy_thunks_obj) = &self.yy_thunks_obj {
-            println!("cargo:warning=YY-Thunks Enabled: {}", yy_thunks_obj);
-            println!("cargo:rustc-link-arg=/SUBSYSTEM:{}", self.subsystem);
+            println!("cargo::warning=YY-Thunks Enabled: {}", yy_thunks_obj);
+            println!("cargo::rustc-link-arg=/SUBSYSTEM:{}", self.subsystem);
             if self.subsystem.contains("WINDOWS") {
                 // https://github.com/rust-lang/rust/blob/bf8801d36dfd28de7d3b0279b53d38593acdfd14/compiler/rustc_codegen_ssa/src/back/linker.rs#L1011
-                println!("cargo:rustc-link-arg=/ENTRY:mainCRTStartup");
+                println!("cargo::rustc-link-arg=/ENTRY:mainCRTStartup");
             }
-            println!("cargo:rustc-link-arg={}", yy_thunks_obj);
+            println!("cargo::rustc-link-arg={}", yy_thunks_obj);
         }
     }
 }
