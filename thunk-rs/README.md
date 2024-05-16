@@ -1,4 +1,4 @@
-# Thunk the Rust program to support old Windows platforms!
+# thunk: Thunk the Rust program to support old Windows platforms!
 
 Thunk uses [VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5) and [YY-Thunks](https://github.com/Chuyu-Team/YY-Thunks) to build programs that support even Windows XP. So, how does it work?
 
