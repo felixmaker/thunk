@@ -102,17 +102,23 @@ impl ThunkBuilder {
         let arch = Arch::from_rust_target(&env::var("CARGO_CFG_TARGET_ARCH").unwrap())?;
         let vc_ltl_lib = get_vc_ltl_os_lib_path(os, arch)?;
 
-        let vc_ltl_path = self.vc_ltl_path.unwrap_or(PathBuf::from(
-            env::var(ENV_VAR_VC_LTL5).map_err(|_| ThunkError::EnvNotFound(&ENV_VAR_VC_LTL5))?,
-        ));
+        let vc_ltl_path = match self.vc_ltl_path {
+            Some(vc_ltl_path) => vc_ltl_path,
+            None => PathBuf::from(
+                env::var(ENV_VAR_VC_LTL5).map_err(|_| ThunkError::EnvNotFound(&ENV_VAR_VC_LTL5))?,
+            ),
+        };
 
         let vc_ltl_path = vc_ltl_path.join(vc_ltl_lib).to_string_lossy().to_string();
 
         let yy_thunks_obj = if self.thunk {
-            let yy_thunks_path = self.yy_thunks_path.unwrap_or(PathBuf::from(
-                env::var(ENV_VAR_YY_THUNKS)
-                    .map_err(|_| ThunkError::EnvNotFound(ENV_VAR_YY_THUNKS))?,
-            ));
+            let yy_thunks_path = match self.yy_thunks_path {
+                Some(yy_thunks_path) => yy_thunks_path,
+                None => PathBuf::from(
+                    env::var(ENV_VAR_YY_THUNKS)
+                        .map_err(|_| ThunkError::EnvNotFound(&ENV_VAR_YY_THUNKS))?,
+                ),
+            };
             let yy_thunks_obj = get_yy_thunks_obj_path(os, arch)?;
             Some(
                 yy_thunks_path
