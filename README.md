@@ -11,7 +11,7 @@ Note: Thunk do not guarantee the compiled program work or work accurately on old
 
 In order to distinguish the program build by Thunk, Thunk builds the release in `./target/*_build`.
 
-# How to use?
+# Library: How to use?
 
 ## Preparation (Manual)
 
@@ -19,8 +19,53 @@ Download VC-LTL5 and YY-Thunks Binary, unzip them and add environment variable:
 
 | Binary | Environment Variable |
 | --- | ---|
-| VC-LTL-5.0.8-Beta2-Binary.7z | VC_LTL |
-| YY-Thunks-1.0.8-Beta4-Binary.zip | YY_THUNKS |
+| VC-LTL-XXX-Binary.7z | VC_LTL |
+| YY-Thunks-XXX-Binary.zip | YY_THUNKS |
+
+Then add Thunk to run path. 
+
+## Preparation (Scoop)
+
+You can just install with scoop:
+
+```
+scoop bucket add felixmaker 'https://github.com/felixmaker/scoop-felixmaker'
+scoop install vc-ltl5 yy-thunks
+```
+
+## Step
+
+Step 1. Add thunk-rs into build dependencies:
+
+```
+cargo add thunk-rs --build
+```
+
+Step 2. Create a build script `build.rs`:
+
+```
+use thunk::{ThunkBuilder, OS};
+
+fn main() {
+    if let Ok(thunk) = ThunkBuilder::default().with_os(OS::WindowsXP).build()
+    {
+        thunk.thunk();
+    }
+}
+```
+
+See [thunk-rs](./thunk-rs/README.md).
+
+# CLI: How to use?
+
+## Preparation (Manual)
+
+Download VC-LTL5 and YY-Thunks Binary, unzip them and add environment variable:
+
+| Binary | Environment Variable |
+| --- | ---|
+| VC-LTL-XXX-Binary.7z | VC_LTL |
+| YY-Thunks-XXX-Binary.zip | YY_THUNKS |
 
 Then add Thunk to run path. 
 
