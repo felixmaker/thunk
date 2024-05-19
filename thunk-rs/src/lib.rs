@@ -95,16 +95,23 @@ pub fn thunk() {
         return;
     }
 
-    if cfg!(feature = "windows_xp") {
-        let os_version = if target_arch == "x86" { "5.01" } else { "5.02" };
-        if cfg!(feature = "subsystem_windows") {
-            println!("cargo::rustc-link-arg=/SUBSYSTEM:WINDOWS,{}", os_version);
-        } else {
-            println!("cargo::rustc-link-arg=/SUBSYSTEM:CONSOLE,{}", os_version);
-        }
-    }
-
     if cfg!(feature = "subsystem_windows") {
+        let os_version = if cfg!(feature = "windows_xp") {
+            if target_arch == "x86" {
+                ",5.01"
+            } else {
+                ",5.02"
+            }
+        } else {
+            ""
+        };
+
+        if cfg!(feature = "subsystem_windows") {
+            println!("cargo::rustc-link-arg=/SUBSYSTEM:WINDOWS{}", os_version);
+        } else {
+            println!("cargo::rustc-link-arg=/SUBSYSTEM:CONSOLE{}", os_version);
+        }
+
         println!("cargo::rustc-link-arg=/ENTRY:mainCRTStartup");
         println!("cargo::warning=Subsystem is set to WINDOWS");
     }
