@@ -23,10 +23,8 @@ cargo add thunk-rs --build
 Step3: Create a build script build.rs:
 
 ```
-use thunk::*;
-
 fn main() {
-    thunk.thunk();
+    thunk::thunk();
 }
 ```
 

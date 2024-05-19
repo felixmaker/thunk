@@ -71,13 +71,11 @@ thunk.exe --help
 cargo add thunk-rs --build
 ```
 
-步骤3：添加生成脚本：
+步骤3：添加生成脚本 `build.rs`：
 
 ```
-use thunk::*;
-
 fn main() {
-    thunk.thunk();
+    thunk::thunk();
 }
 ```
 
