@@ -107,12 +107,10 @@ pub fn thunk() {
         ""
     };
 
-    if cfg!(feature = "subsystem_windows") {
-        if env::var("PROFILE").unwrap() != "debug" {
-            println!("cargo::rustc-link-arg=/SUBSYSTEM:WINDOWS{}", os_version);
-            println!("cargo::rustc-link-arg=/ENTRY:mainCRTStartup");
-            println!("cargo::warning=Subsystem is set to WINDOWS");
-        }
+    if cfg!(feature = "subsystem_windows") && env::var("PROFILE").unwrap() != "debug" {
+        println!("cargo::rustc-link-arg=/SUBSYSTEM:WINDOWS{}", os_version);
+        println!("cargo::rustc-link-arg=/ENTRY:mainCRTStartup");
+        println!("cargo::warning=Subsystem is set to WINDOWS");
     } else {
         println!("cargo::rustc-link-arg=/SUBSYSTEM:CONSOLE{}", os_version);
     }
