@@ -5,6 +5,7 @@ use std::{env, path::PathBuf, process::Command};
 const VC_LTL_VERSION: &'static str = "5.0.10-Beta2";
 const YY_THUNKS_VERSION: &'static str = "1.0.10-Beta7";
 
+/// This function should be call in build.rs.
 pub fn thunk() {
     let target_os = env::var("CARGO_CFG_TARGET_OS").unwrap();
     let target_env = env::var("CARGO_CFG_TARGET_ENV").unwrap();
