@@ -85,36 +85,36 @@ pub fn thunk() {
     ));
 
     println!("cargo::rustc-link-arg={}", yy_thunks.to_string_lossy());
-
     println!(
         "cargo::warning=YY-Thunks Enabled: {}({})",
         yy_thunks_platform, yy_thunks_arch
     );
-
+    
+    // Return if is lib mode
     if cfg!(feature = "lib") {
         println!("cargo::warning=Lib Mode Enabled!");
         return;
     }
 
-    if cfg!(feature = "subsystem_windows") {
-        let os_version = if cfg!(feature = "windows_xp") {
-            if target_arch == "x86" {
-                ",5.01"
-            } else {
-                ",5.02"
-            }
+    // Set subsystem to windows
+    let os_version = if cfg!(feature = "windows_xp") {
+        if target_arch == "x86" {
+            ",5.01"
         } else {
-            ""
-        };
-
-        if cfg!(feature = "subsystem_windows") {
-            println!("cargo::rustc-link-arg=/SUBSYSTEM:WINDOWS{}", os_version);
-        } else {
-            println!("cargo::rustc-link-arg=/SUBSYSTEM:CONSOLE{}", os_version);
+            ",5.02"
         }
+    } else {
+        ""
+    };
 
-        println!("cargo::rustc-link-arg=/ENTRY:mainCRTStartup");
-        println!("cargo::warning=Subsystem is set to WINDOWS");
+    if cfg!(feature = "subsystem_windows") {
+        if env::var("PROFILE").unwrap() != "debug" {
+            println!("cargo::rustc-link-arg=/SUBSYSTEM:WINDOWS{}", os_version);
+            println!("cargo::rustc-link-arg=/ENTRY:mainCRTStartup");
+            println!("cargo::warning=Subsystem is set to WINDOWS");
+        }
+    } else {
+        println!("cargo::rustc-link-arg=/SUBSYSTEM:CONSOLE{}", os_version);
     }
 }
 
