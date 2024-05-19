@@ -7,7 +7,7 @@ Thunk uses [VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5) and [YY-Thunks](http
  - Add VC-LTL to the library search path
  - Use YY-Thunks to remedy API that old platform that does not exist
 
-Note: Thunk does not guarantee the compiled program work or work accurately on old platform. 
+Note: Thunk does not guarantee the compiled program work or work accurately on old platforms. 
 **USE AT YOUR OWN RISK!**
 
 ## Usage
