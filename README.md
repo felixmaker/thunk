@@ -1,4 +1,4 @@
-# Use Thunk to build your Rust program that runs on old Windows platforms
+# Use Thunk to build your Rust program to support old Windows platforms
 
 [中文自述文件](./readme-chinese.md)
 
@@ -9,54 +9,7 @@ Thunk uses [VC-LTL5](https://github.com/Chuyu-Team/VC-LTL5) and [YY-Thunks](http
 
 Note: Thunk do not guarantee the compiled program work or work accurately on old platform. USE AT YOUR OWN RISK!
 
-In order to distinguish the program build by Thunk, Thunk builds the release in `./target/*_build`.
-
-# Library: How to use?
-
-## Preparation (Manual)
-
-Download VC-LTL5 and YY-Thunks Binary, unzip them and add environment variable:
-
-| Binary | Environment Variable |
-| --- | ---|
-| VC-LTL-XXX-Binary.7z | VC_LTL |
-| YY-Thunks-XXX-Binary.zip | YY_THUNKS |
-
-Then add Thunk to run path. 
-
-## Preparation (Scoop)
-
-You can just install with scoop:
-
-```
-scoop bucket add felixmaker 'https://github.com/felixmaker/scoop-felixmaker'
-scoop install vc-ltl5 yy-thunks
-```
-
-## Step
-
-Step 1. Add thunk-rs into build dependencies:
-
-```
-cargo add thunk-rs --build
-```
-
-Step 2. Create a build script `build.rs`:
-
-```
-use thunk::{ThunkBuilder, OS};
-
-fn main() {
-    if let Ok(thunk) = ThunkBuilder::default().with_os(OS::WindowsXP).build()
-    {
-        thunk.thunk();
-    }
-}
-```
-
-See [thunk-rs](./thunk-rs/README.md).
-
-# CLI: How to use?
+## Usage (As Command line tool)
 
 ## Preparation (Manual)
 
@@ -102,6 +55,29 @@ Use the following command to show help:
 thunk.exe --help
 ```
 
+Note: In order to distinguish the program build by Thunk, Thunk builds the release in `./target/*_build`.
+
+# Usage (As Library)
+
+Step1: Ensure command line tools `curl` and `7z` could be found in `PATH`. (Needed if `VC_LTL` and `YY_THUNKS` not found in environment variables)
+
+Step2: Add thunk as a build dependency:
+
+```
+cargo add thunk-rs --build
+```
+
+Step3: Create a build script `build.rs`:
+
+```
+use thunk::*;
+
+fn main() {
+    thunk.thunk();
+}
+```
+
+Then, your program should run on Windows XP. See [thunk-rs](./thunk-rs/README.md).
 
 # Todo list
 

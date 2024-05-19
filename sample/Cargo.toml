@@ -3,8 +3,7 @@ name = "sample"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
-
 [build-dependencies]
-thunk-rs = {version="0.1", path="../thunk-rs"}
+thunk-rs = {path="../thunk-rs"}
 
+[features]

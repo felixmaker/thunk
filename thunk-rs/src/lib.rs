@@ -1,144 +1,163 @@
 #![doc = include_str!("../README.md")]
 
-mod error;
-mod sys;
+use std::{env, path::PathBuf, process::Command};
 
-use std::env;
-use std::path::{Path, PathBuf};
+const VC_LTL_VERSION: &'static str = "5.0.10-Beta2";
+const YY_THUNKS_VERSION: &'static str = "1.0.10-Beta7";
 
-pub use error::*;
-pub use sys::*;
+pub fn thunk() {
+    let target_os = env::var("CARGO_CFG_TARGET_OS").unwrap();
+    let target_env = env::var("CARGO_CFG_TARGET_ENV").unwrap();
 
-const ENV_VAR_VC_LTL5: &'static str = "VC_LTL";
-const ENV_VAR_YY_THUNKS: &'static str = "YY_THUNKS";
-
-pub struct Thunk {
-    subsystem: String,
-    vc_ltl_path: String,
-    yy_thunks_obj: Option<String>,
-}
-
-impl Thunk {
-    /// Thunk the Rust program. Call it in build script.
-    pub fn thunk(&self) {
-        println!("cargo::warning=VC-LTL5 Enabled: {}", self.vc_ltl_path);
-        println!("cargo::rustc-link-search={}", self.vc_ltl_path);
-
-        if let Some(yy_thunks_obj) = &self.yy_thunks_obj {
-            println!("cargo::warning=YY-Thunks Enabled: {}", yy_thunks_obj);
-            println!("cargo::rustc-link-arg=/SUBSYSTEM:{}", self.subsystem);
-            if self.subsystem.contains("WINDOWS") {
-                // https://github.com/rust-lang/rust/blob/bf8801d36dfd28de7d3b0279b53d38593acdfd14/compiler/rustc_codegen_ssa/src/back/linker.rs#L1011
-                println!("cargo::rustc-link-arg=/ENTRY:mainCRTStartup");
-            }
-            println!("cargo::rustc-link-arg={}", yy_thunks_obj);
-        }
-    }
-}
-
-#[derive(Default)]
-pub struct ThunkBuilder {
-    thunk: bool,
-    os: Option<OS>,
-    subsystem: Option<Subsystem>,
-    vc_ltl_path: Option<PathBuf>,
-    yy_thunks_path: Option<PathBuf>,
-}
-
-impl ThunkBuilder {
-    /// Set which OS to support.
-    ///
-    /// Note: Windows XP and Windows Vista will auto use YY-Thunks.
-    pub fn with_os(mut self, os: OS) -> Self {
-        match os {
-            OS::WindowsXP | OS::WindowsVista => self.thunk = true,
-            _ => {}
-        }
-        self.os = Some(os);
-        self
+    if target_os != "windows" || target_env != "msvc" {
+        println!("cargo::warning=Skipped! Only Windows(MSVC) is supported!");
+        return;
     }
 
-    /// Enforce YY-Thunks enabled. Call this may cause the program failed to compile.
-    pub fn with_thunk_enforced(mut self, thunk: bool) -> Self {
-        self.thunk = thunk;
-        self
-    }
+    let target_arch = env::var("CARGO_CFG_TARGET_ARCH").unwrap();
+    let out_dir = PathBuf::from(env::var("OUT_DIR").unwrap());
 
-    /// Set the subsystem. Windows is for GUI. Console is dafault.
-    pub fn with_subsystem(mut self, subsystem: Subsystem) -> Self {
-        self.subsystem = Some(subsystem);
-        self
-    }
-
-    /// Set the VC-LTL5 path. Default to `VC_LTL` from env.
-    pub fn with_vc_ltl_path<P>(mut self, vc_ltl_path: P) -> Self
-    where
-        P: AsRef<Path>,
-    {
-        self.vc_ltl_path = Some(PathBuf::from(vc_ltl_path.as_ref()));
-        self
-    }
-
-    /// Set the YY-Thunks path. Default to `YY_THUNKS` from env.
-    pub fn with_yy_thunks_path<P>(mut self, yy_thunks_path: P) -> Self
-    where
-        P: AsRef<Path>,
-    {
-        self.thunk = true;
-        self.yy_thunks_path = Some(PathBuf::from(yy_thunks_path.as_ref()));
-        self
-    }
-
-    /// Build the Thunk.
-    pub fn build(self) -> ThunkResult<Thunk> {
-        let target_os = std::env::var("CARGO_CFG_TARGET_OS").unwrap();
-        let target_env = std::env::var("CARGO_CFG_TARGET_ENV").unwrap();
-
-        if !target_os.contains("windows") || !target_env.contains("msvc") {
-            return Err(ThunkError::UnsupportedPlatform);
-        }
-
-        let os = self.os.unwrap_or(OS::Windows7);
-        let arch = Arch::from_rust_target(&env::var("CARGO_CFG_TARGET_ARCH").unwrap())?;
-        let vc_ltl_lib = get_vc_ltl_os_lib_path(os, arch)?;
-
-        let vc_ltl_path = match self.vc_ltl_path {
-            Some(vc_ltl_path) => vc_ltl_path,
-            None => PathBuf::from(
-                env::var(ENV_VAR_VC_LTL5).map_err(|_| ThunkError::EnvNotFound(&ENV_VAR_VC_LTL5))?,
-            ),
-        };
-
-        let vc_ltl_path = vc_ltl_path.join(vc_ltl_lib).to_string_lossy().to_string();
-
-        let yy_thunks_obj = if self.thunk {
-            let yy_thunks_path = match self.yy_thunks_path {
-                Some(yy_thunks_path) => yy_thunks_path,
-                None => PathBuf::from(
-                    env::var(ENV_VAR_YY_THUNKS)
-                        .map_err(|_| ThunkError::EnvNotFound(&ENV_VAR_YY_THUNKS))?,
-                ),
-            };
-            let yy_thunks_obj = get_yy_thunks_obj_path(os, arch)?;
-            Some(
-                yy_thunks_path
-                    .join(yy_thunks_obj)
-                    .to_string_lossy()
-                    .to_string(),
-            )
+    // Enable VC-LTL5
+    let vc_ltl_arch = if target_arch == "x86" { "Win32" } else { "x64" };
+    let vc_ltl_platform = if cfg!(feature = "windows_xp") {
+        if vc_ltl_arch == "Win32" {
+            "5.1.2600.0"
         } else {
-            None
+            "5.2.3790.0"
+        }
+    } else if cfg!(feature = "windows_vista") {
+        "6.0.6000.0"
+    } else if cfg!(feature = "vc_ltl_only") {
+        "10.0.10240.0"
+    } else {
+        println!("cargo::warning=VC-LTL5 Skipped: Nothing to do!");
+        return;
+    };
+
+    let vc_ltl = get_or_download(
+        "VC_LTL",
+        "VC_LTL_URL",
+        &format!(
+            "https://github.com/Chuyu-Team/VC-LTL5/releases/download/v{}/VC-LTL-{}-Binary.7z",
+            VC_LTL_VERSION, VC_LTL_VERSION
+        ),
+        &out_dir,
+        &format!("VC-LTL-{}", VC_LTL_VERSION),
+    );
+
+    let vc_ltl_path = vc_ltl.join(&format!(
+        "TargetPlatform/{}/lib/{}",
+        vc_ltl_platform, vc_ltl_arch
+    ));
+
+    println!("cargo::rustc-link-search={}", vc_ltl_path.to_string_lossy());
+    println!(
+        "cargo::warning=VC-LTL5 Enabled: {}({})",
+        vc_ltl_platform, vc_ltl_arch
+    );
+
+    // Enable YY-Thunks
+    let yy_thunks_arch = if target_arch == "x86" { "x86" } else { "x64" };
+    let yy_thunks_platform = if cfg!(feature = "windows_xp") {
+        "WinXP"
+    } else if cfg!(feature = "windows_vista") {
+        "Vista"
+    } else {
+        println!("cargo::warning=YY-Thunks Skipped: Nothing to do!!");
+        return;
+    };
+
+    let yy_thunks = get_or_download(
+        "YY_THUNKS",
+        "YY_THUNKS_URL",
+        &format!(
+            "https://github.com/Chuyu-Team/YY-Thunks/releases/download/v{}/YY-Thunks-{}-Binary.zip",
+            YY_THUNKS_VERSION, YY_THUNKS_VERSION
+        ),
+        &out_dir,
+        &format!("YY-Thunks-{}", YY_THUNKS_VERSION),
+    );
+
+    let yy_thunks = yy_thunks.join(format!(
+        "objs/{}/YY_Thunks_for_{}.obj",
+        yy_thunks_arch, yy_thunks_platform
+    ));
+
+    println!("cargo::rustc-link-arg={}", yy_thunks.to_string_lossy());
+
+    println!(
+        "cargo::warning=YY-Thunks Enabled: {}({})",
+        yy_thunks_platform, yy_thunks_arch
+    );
+
+    if cfg!(feature = "lib") {
+        println!("cargo::warning=Lib Mode Enabled!");
+        return;
+    }
+
+    if cfg!(feature = "windows_xp") {
+        let os_version = if target_arch == "x86" { "5.01" } else { "5.02" };
+        if cfg!(feature = "subsystem_windows") {
+            println!("cargo::rustc-link-arg=/SUBSYSTEM:WINDOWS,{}", os_version);
+        } else {
+            println!("cargo::rustc-link-arg=/SUBSYSTEM:CONSOLE,{}", os_version);
+        }
+    }
+
+    if cfg!(feature = "subsystem_windows") {
+        println!("cargo::rustc-link-arg=/ENTRY:mainCRTStartup");
+        println!("cargo::warning=Subsystem is set to WINDOWS");
+    }
+}
+
+fn get_or_download(
+    env_path: &str,
+    env_url: &str,
+    default_url: &str,
+    out_dir: &PathBuf,
+    unpack_name: &str,
+) -> PathBuf {
+    if let Ok(env_path) = env::var(env_path) {
+        PathBuf::from(env_path)
+    } else {
+        let unpack_dir = out_dir.join(unpack_name);
+
+        // Skip download if unpack dir exists.
+        if unpack_dir.exists() {
+            return unpack_dir;
+        }
+
+        let url = if let Ok(env_url) = env::var(env_url) {
+            PathBuf::from(env_url)
+        } else {
+            PathBuf::from(default_url)
         };
 
-        let subsystem = self.subsystem.unwrap_or(Subsystem::Console);
+        let curl_status = Command::new("curl")
+            .args(["-LOkf", url.to_str().unwrap()])
+            .current_dir(out_dir)
+            .status()
+            .expect("Curl is needed to download binaries!");
 
-        let os_version = get_os_version(os, arch).unwrap_or("6.00".into());
-        let subsystem = format!("{},{}", subsystem.to_string(), os_version);
+        if !curl_status.success() {
+            panic!("Download libraries from {:?} failed", url)
+        }
 
-        Ok(Thunk {
-            subsystem,
-            vc_ltl_path,
-            yy_thunks_obj,
-        })
+        let extract_status = Command::new("7z")
+            .args([
+                "x",
+                "-aoa",
+                url.file_name().unwrap().to_str().unwrap(),
+                &format!("-o{}", unpack_name),
+            ])
+            .current_dir(out_dir)
+            .status()
+            .expect("7z is needed to unpack libraries!");
+
+        if !extract_status.success() {
+            panic!("Unpack YY-Thunks failed!")
+        }
+
+        unpack_dir
     }
 }

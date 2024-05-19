@@ -7,10 +7,7 @@ Thunk 主要帮你做了下面两件事：
 
 注意：Thunk **并不能保证所编译的软件可以成功编译或者编译后正常运行**。
 
-为了区分 Thunk 编译出来的程序，程序生成在 `./target/*_build` 文件夹。
-
-
-# 使用方法
+# 作为命令行工具使用
 
 ## 准备工作（手动）
 
@@ -32,13 +29,6 @@ scoop bucket add felixmaker 'https://github.com/felixmaker/scoop-felixmaker'
 scoop install felixmaker/thunk
 ```
 
-国内加速下载：
-
-```
-scoop bucket add sfm-cn 'https://ghproxy.com/github.com/felixmaker/sfm-cn'
-scoop install sfm-cn/thunk
-```
-
 ## 示例 1 编译一个可以在 XP 上运行的程序
 
 ```
@@ -55,13 +45,11 @@ cd build_for_xp
 thunk --os xp --arch x86 --lib -- --release
 ```
 
-
 ## 更多用法请查看帮助
 
 ```
 thunk.exe --help
 ```
-
 
 | 参数 | 说明 | 可能值 |
 | --- | --- | --- |
@@ -71,6 +59,29 @@ thunk.exe --help
 | --subsystem | 设置 subsystem | console, windows |
 | -- | -- 后面的参数会传到 cargo build 后面 | 自定义 |
 
+注：为了区分 Thunk 编译出来的程序，程序生成在 `./target/*_build` 文件夹。
+
+# 作为类库使用
+
+步骤1：确保 `curl` 和 `7z` 工具放置在运行目录里（如果设置了 `VC_LTL` 和 `YY_THUNKS` 环境变量可省去此步）
+
+步骤2：添加 `thunk-rs` 依赖：
+
+```
+cargo add thunk-rs --build
+```
+
+步骤3：添加生成脚本：
+
+```
+use thunk::*;
+
+fn main() {
+    thunk.thunk();
+}
+```
+
+不出意外，编程出来程序可以在 XP 上运行，查看 [thunk-rs](./thunk-rs/README.md).
 
 
 # 任务清单
