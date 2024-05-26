@@ -37,3 +37,8 @@ Then, your program should run on Windows XP.
  - vc_ltl_only: Enables VC-LTL5 to make the final executable run without VC runtime installed.
  - lib: Enables this when compiling a library.
  - subsystem_windows: Enables this when you want to hide console.
+
+## Test Status
+
+ - VC-LTL5: 5.1.1-Beta1
+ - YY-Thunks: 1.0.10-Beta8

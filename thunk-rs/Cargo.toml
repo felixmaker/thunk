@@ -1,9 +1,9 @@
 [package]
 name = "thunk-rs"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2021"
 authors = ["felixmaker"]
-description = "Thunk the Rust program to support old Windows platforms!"
+description = "Thunk the Rust program to support Windows XP, Vista and more!"
 license = "Apache-2.0 OR MIT"
 keywords = ["build-dependencies"]
 readme = "README.md"
