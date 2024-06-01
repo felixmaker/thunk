@@ -2,8 +2,8 @@
 
 use std::{env, path::PathBuf, process::Command};
 
-const VC_LTL_VERSION: &'static str = "5.1.1-Beta1";
-const YY_THUNKS_VERSION: &'static str = "1.0.10-Beta8";
+const VC_LTL_VERSION: &'static str = "5.1.1-Beta2";
+const YY_THUNKS_VERSION: &'static str = "1.1.1-Beta1";
 
 /// This function should be call in build.rs.
 pub fn thunk() {
@@ -20,16 +20,22 @@ pub fn thunk() {
 
     // Enable VC-LTL5
     let vc_ltl_arch = if target_arch == "x86" { "Win32" } else { "x64" };
-    let vc_ltl_platform = if cfg!(feature = "windows_xp") {
+    let vc_ltl_platform = if cfg!(feature = "xp") {
         if vc_ltl_arch == "Win32" {
             "5.1.2600.0"
         } else {
             "5.2.3790.0"
         }
-    } else if cfg!(feature = "windows_vista") {
+    } else if cfg!(feature = "vista") || cfg!(feature = "win7") {
         "6.0.6000.0"
-    } else if cfg!(feature = "vc_ltl_only") {
+    } else if cfg!(feature = "win8") {
+        "6.2.9200.0"
+    } else if cfg!(feature = "win10_10240") {
         "10.0.10240.0"
+    } else if cfg!(feature = "win10_19041") {
+        "10.0.19041.0"
+    } else if cfg!(feature = "vc_ltl_only") {
+        "6.0.6000.0"
     } else {
         println!("cargo::warning=VC-LTL5 Skipped: Nothing to do!");
         return;
@@ -59,10 +65,18 @@ pub fn thunk() {
 
     // Enable YY-Thunks
     let yy_thunks_arch = if target_arch == "x86" { "x86" } else { "x64" };
-    let yy_thunks_platform = if cfg!(feature = "windows_xp") {
+    let yy_thunks_platform = if cfg!(feature = "xp") {
         "WinXP"
-    } else if cfg!(feature = "windows_vista") {
+    } else if cfg!(feature = "vista") {
         "Vista"
+    } else if cfg!(feature = "win7") {
+        "Win7"
+    } else if cfg!(feature = "win8") {
+        "Win8"
+    } else if cfg!(feature = "win10_10240") {
+        "Win10.0.10240"
+    } else if cfg!(feature = "win10_19041") {
+        "Win10.0.19041"
     } else {
         println!("cargo::warning=YY-Thunks Skipped: Nothing to do!!");
         return;
@@ -89,7 +103,7 @@ pub fn thunk() {
         "cargo::warning=YY-Thunks Enabled: {}({})",
         yy_thunks_platform, yy_thunks_arch
     );
-    
+
     // Return if is lib mode
     if cfg!(feature = "lib") {
         println!("cargo::warning=Lib Mode Enabled!");
@@ -97,7 +111,7 @@ pub fn thunk() {
     }
 
     // Set subsystem to windows
-    let os_version = if cfg!(feature = "windows_xp") {
+    let os_version = if cfg!(feature = "xp") {
         if target_arch == "x86" {
             ",5.01"
         } else {

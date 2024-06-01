@@ -81,23 +81,20 @@ impl ThunkBuilder {
             }
         }
 
-        let thunks_obj = match os {
-            OS::WindowsXP | OS::WindowsVista => {
-                let mut thunks = {
-                    let yy_thunks_env_path = env_vars.get(ENV_VAR_YY_THUNKS).ok_or_else(|| {
-                        anyhow!(
-                            "You need to set {} environment variable.",
-                            ENV_VAR_YY_THUNKS
-                        )
-                    })?;
-                    PathBuf::from(yy_thunks_env_path)
-                };
+        let thunks_obj = {
+            let mut thunks = {
+                let yy_thunks_env_path = env_vars.get(ENV_VAR_YY_THUNKS).ok_or_else(|| {
+                    anyhow!(
+                        "You need to set {} environment variable.",
+                        ENV_VAR_YY_THUNKS
+                    )
+                })?;
+                PathBuf::from(yy_thunks_env_path)
+            };
 
-                let os_obj = get_yy_thunks_obj_path(os, arch).ok_or_else(|| anyhow!(""))?;
-                thunks.push(os_obj);
-                Some(thunks)
-            }
-            _ => None,
+            let os_obj = get_yy_thunks_obj_path(os, arch).ok_or_else(|| anyhow!(""))?;
+            thunks.push(os_obj);
+            Some(thunks)
         };
 
         if let Some(obj) = thunks_obj {

@@ -135,6 +135,14 @@ pub fn get_yy_thunks_obj_path(os: OS, arch: Arch) -> Option<PathBuf> {
         (OS::WindowsXP, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_WinXP.obj")),
         (OS::WindowsVista, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Vista.obj")),
         (OS::WindowsVista, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Vista.obj")),
+        (OS::Windows7, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Win7.obj")),
+        (OS::Windows7, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Win7.obj")),
+        (OS::Windows8, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Win8.obj")),
+        (OS::Windows8, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Win8.obj")),
+        (OS::Windows10, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Win10.0.10240.obj")),
+        (OS::Windows10, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Win10.0.10240.obj")),
+        (OS::Windows10_20H1, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Win10.0.19041.obj")),
+        (OS::Windows10_20H1, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Win10.0.19041.obj")),
         _ => None,
     }
 }

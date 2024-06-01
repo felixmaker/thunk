@@ -83,6 +83,12 @@ Then, your program should run on Windows XP. See [thunk-rs](./thunk-rs/README.md
  - [x] Windows XP x64
  - [x] Windows Vista x86
  - [x] Windows Vista x64
+ - [x] Windows 7 x86 (v0.3.2)
+ - [x] Windows 7 x64 (v0.3.2)
+ - [x] Windows 8 x86 (v0.3.2)
+ - [x] Windows 8 x64 (v0.3.2)
+ - [x] Windows 10 x86 (v0.3.2)
+ - [x] Windows 10 x64 (v0.3.2)
  - [x] Only VC-LTL
  - [x] Scoop bucket
 

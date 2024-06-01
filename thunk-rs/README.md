@@ -32,13 +32,16 @@ Then, your program should run on Windows XP.
 
 ## Feature
 
- - windows_xp: Enables VC-LTL5 and YY-Thunks to support Windows XP (default)
- - windows_vista: Enables VC-LTL5 and YY-Thunks to support Windows Vista
+ - xp: Enables VC-LTL5 and YY-Thunks to support Windows XP (default)
+ - vista: Enables VC-LTL5 and YY-Thunks to support Windows Vista
+ - win7: Enables VC-LTL5 and YY-Thunks to support Windows 7
+ - win8: Enables VC-LTL5 and YY-Thunks to support Windows 8
+ - win10: Enables VC-LTL5 and YY-Thunks to support Windows 10
  - vc_ltl_only: Enables VC-LTL5 to make the final executable run without VC runtime installed.
  - lib: Enables this when compiling a library.
  - subsystem_windows: Enables this when you want to hide console.
 
 ## Test Status
 
- - VC-LTL5: 5.1.1-Beta1
- - YY-Thunks: 1.0.10-Beta8
+ - VC-LTL5: >= 5.1.1-Beta2
+ - YY-Thunks: >= 1.1.1-Beta1
