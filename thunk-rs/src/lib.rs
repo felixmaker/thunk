@@ -3,7 +3,7 @@
 use std::{env, path::PathBuf, process::Command};
 
 const VC_LTL_VERSION: &'static str = "5.1.1-Beta2";
-const YY_THUNKS_VERSION: &'static str = "1.1.1-Beta1";
+const YY_THUNKS_VERSION: &'static str = "1.1.1";
 
 /// This function should be call in build.rs.
 pub fn thunk() {
@@ -86,7 +86,7 @@ pub fn thunk() {
         "YY_THUNKS",
         "YY_THUNKS_URL",
         &format!(
-            "https://github.com/Chuyu-Team/YY-Thunks/releases/download/v{}/YY-Thunks-{}-Binary.zip",
+            "https://github.com/Chuyu-Team/YY-Thunks/releases/download/v{}/YY-Thunks-{}-Objs.zip",
             YY_THUNKS_VERSION, YY_THUNKS_VERSION
         ),
         &out_dir,
