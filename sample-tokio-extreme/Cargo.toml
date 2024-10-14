@@ -11,7 +11,8 @@ thunk-rs = { path="../thunk-rs" }
 [features]
 
 [dependencies]
-tokio = { version = "1.40.0", features = ["rt-multi-thread", "net", "macros"] }
+libc_alloc = "1.0.7"
+tokio = { version = "1.40.0", features = ["rt", "net", "macros"] }
 
 [profile.release]
 incremental = true
