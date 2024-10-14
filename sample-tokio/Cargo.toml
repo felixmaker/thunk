@@ -1,5 +1,5 @@
 [package]
-name = "sample"
+name = "sample-tokio"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,3 +9,4 @@ thunk-rs = { path="../thunk-rs" }
 [features]
 
 [dependencies]
+tokio = { version = "1.40.0", features = ["rt-multi-thread", "net", "macros"] }
