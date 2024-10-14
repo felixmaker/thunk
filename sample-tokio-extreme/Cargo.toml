@@ -1,0 +1,35 @@
+cargo-features = ["trim-paths", "profile-rustflags"]
+
+[package]
+name = "sample-tokio-extreme"
+version = "0.1.0"
+edition = "2021"
+
+[build-dependencies]
+thunk-rs = { path="../thunk-rs" }
+
+[features]
+
+[dependencies]
+libc_alloc = "1.0.7"
+tokio = { version = "1.40.0", features = ["rt", "net", "macros"] }
+
+[profile.release]
+incremental = true
+lto = "thin"
+strip = "debuginfo"
+rustflags = ["-Zlocation-detail=none", "-Zfmt-debug=shallow"]
+
+[profile.min-size-release]
+inherits = "release"
+codegen-units = 1
+lto = "fat"
+opt-level = "s"
+
+[profile.release-strip]
+inherits = "release"
+strip = "symbols"
+
+[profile.min-size-release-strip]
+inherits = "min-size-release"
+strip = "symbols"
