@@ -16,6 +16,10 @@ name = "thunk"
 path = "src/lib.rs"
 
 [dependencies]
+anyhow = "1.0.89"
+reqwest = { version = "0.12.8", features = ["blocking"] }
+sevenz-rust = "0.6.1"
+zip-extract = { version = "0.2.1", features = ["deflate", "deflate-miniz", "lzma", "zstd"] }
 
 [features]
 default = ["xp"]
