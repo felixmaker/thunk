@@ -23,7 +23,7 @@ pub fn thunk() -> anyhow::Result<()> {
 
     // Enable VC-LTL5
     let vc_ltl_arch = if target_arch == "x86" { "Win32" } else { "x64" };
-    let vc_ltl_platform = if cfg!(feature = "xp") {
+    let vc_ltl_platform = if cfg!(feature = "xp") || cfg!(feature = "win2k") {
         if vc_ltl_arch == "Win32" {
             "5.1.2600.0"
         } else {
@@ -80,7 +80,9 @@ pub fn thunk() -> anyhow::Result<()> {
         s.spawn(|| {
             // Enable YY-Thunks
             let yy_thunks_arch = if target_arch == "x86" { "x86" } else { "x64" };
-            let yy_thunks_platform = if cfg!(feature = "xp") {
+            let yy_thunks_platform = if cfg!(feature = "win2k") && target_arch == "x86" {
+                "Win2K"
+            } else if cfg!(feature = "xp") {
                 "WinXP"
             } else if cfg!(feature = "vista") {
                 "Vista"
