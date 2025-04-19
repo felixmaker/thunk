@@ -11,7 +11,7 @@ Note: Thunk does not guarantee the compiled program work or work accurately on o
 
 ## Usage (As Command line tool)
 
-## Preparation (Manual)
+## Preparation
 
 Download VC-LTL5 and YY-Thunks Binary, unzip them and add environment variable:
 
@@ -22,13 +22,11 @@ Download VC-LTL5 and YY-Thunks Binary, unzip them and add environment variable:
 
 Then add Thunk to run path. 
 
-## Preparation (Scoop)
 
-You can just install with scoop:
+## Install Thunk
 
 ```
-scoop bucket add felixmaker 'https://github.com/felixmaker/scoop-felixmaker'
-scoop install felixmaker/thunk
+cargo install thunk-cli
 ```
 
 ## Sample 1. Build for Windows XP
@@ -90,7 +88,7 @@ Then, your program should run on Windows XP. See [thunk-rs](./thunk-rs/README.md
  - [x] Windows 10 x86 (v0.3.2)
  - [x] Windows 10 x64 (v0.3.2)
  - [x] Only VC-LTL
- - [x] Scoop bucket
+ - [] Scoop bucket
 
 
 # Thanks

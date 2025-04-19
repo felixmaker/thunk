@@ -2,6 +2,13 @@
 name = "thunk-cli"
 version = "0.3.2"
 edition = "2021"
+authors = ["felixmaker"]
+description = "Thunk the Rust program to support Windows XP, Vista and more!"
+license = "Apache-2.0 OR MIT"
+keywords = ["build-dependencies"]
+readme = "README.md"
+repository = "https://github.com/felixmaker/thunk"
+documentation = "https://docs.rs/thunk-rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

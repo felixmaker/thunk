@@ -9,7 +9,7 @@ Thunk 主要帮你做了下面两件事：
 
 # 作为命令行工具使用
 
-## 准备工作（手动）
+## 准备工作
 
 下载 VC-LTL5、 YY-Thunks Binary 文件，解压，并添加环境变量：
 
@@ -18,15 +18,10 @@ Thunk 主要帮你做了下面两件事：
 | VC-LTL-5.0.8-Beta2-Binary.7z | VC_LTL |
 | YY-Thunks-1.0.8-Beta4-Binary.zip | YY_THUNKS |
 
-再将 Thunk 添加到环境变量。
-
-## 准备工作（Scoop）
-
-你也可以直接通过 Scoop 包管理器安装：
+## 安装
 
 ```
-scoop bucket add felixmaker 'https://github.com/felixmaker/scoop-felixmaker'
-scoop install felixmaker/thunk
+cargo install thunk
 ```
 
 ## 示例 1 编译一个可以在 XP 上运行的程序
