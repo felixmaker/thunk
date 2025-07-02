@@ -88,7 +88,7 @@ Then, your program should run on Windows XP. See [thunk-rs](./thunk-rs/README.md
  - [x] Windows 10 x86 (v0.3.2)
  - [x] Windows 10 x64 (v0.3.2)
  - [x] Only VC-LTL
- - [] Scoop bucket
+ - [ ] Scoop bucket
 
 
 # Thanks
