@@ -125,8 +125,9 @@ pub fn thunk() {
         println!("cargo::rustc-link-arg=/SUBSYSTEM:WINDOWS{}", os_version);
         println!("cargo::rustc-link-arg=/ENTRY:mainCRTStartup");
         println!("cargo::warning=Subsystem is set to WINDOWS");
-    } else {
+    } else if cfg!(feature = "subsystem_console"){
         println!("cargo::rustc-link-arg=/SUBSYSTEM:CONSOLE{}", os_version);
+        println!("cargo::warning=Subsystem is set to CONSOLE");
     }
 }
 
