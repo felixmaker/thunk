@@ -2,7 +2,7 @@
 
 use std::{env, path::PathBuf, process::Command};
 
-const VC_LTL_VERSION: &'static str = "5.2.2-Beta2";
+const VC_LTL_VERSION: &'static str = "5.2.2";
 const YY_THUNKS_VERSION: &'static str = "1.1.7";
 
 /// This function should be call in build.rs.

@@ -1,6 +1,6 @@
 [package]
 name = "thunk-rs"
-version = "0.3.4"
+version = "0.3.5"
 edition = "2021"
 authors = ["felixmaker"]
 description = "Thunk the Rust program to support Windows XP, Vista and more!"
