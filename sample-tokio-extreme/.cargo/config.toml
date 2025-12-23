@@ -1,0 +1,6 @@
+[build]
+target = "x86_64-pc-windows-msvc"
+
+[unstable]
+build-std = ["core", "alloc", "std", "compiler_builtins"]
+build-std-features = ["compiler-builtins-mem", "optimize_for_size"]

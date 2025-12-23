@@ -95,56 +95,46 @@ impl From<String> for Arch {
 
 pub fn get_vc_ltl_os_lib_path(os: OS, arch: Arch) -> Option<PathBuf> {
     match (os, arch) {
-        (OS::WindowsXP, Arch::Win32) => Some(PathBuf::from("TargetPlatform/5.1.2600.0/lib/Win32")),
-        (OS::WindowsXP, Arch::X64) => Some(PathBuf::from("TargetPlatform/5.2.3790.0/lib/x64")),
+        (OS::WindowsXP, Arch::Win32) => Some("TargetPlatform/5.1.2600.0/lib/Win32"),
+        (OS::WindowsXP, Arch::X64) => Some("TargetPlatform/5.2.3790.0/lib/x64"),
 
         (OS::WindowsVista | OS::Windows7, Arch::Win32) => {
-            Some(PathBuf::from("TargetPlatform/6.0.6000.0/lib/Win32"))
+            Some("TargetPlatform/6.0.6000.0/lib/Win32")
         }
-        (OS::WindowsVista | OS::Windows7, Arch::X64) => {
-            Some(PathBuf::from("TargetPlatform/6.0.6000.0/lib/x64"))
-        }
+        (OS::WindowsVista | OS::Windows7, Arch::X64) => Some("TargetPlatform/6.0.6000.0/lib/x64"),
 
-        (OS::Windows8, Arch::Win32) => Some(PathBuf::from("TargetPlatform/6.2.9200.0/lib/Win32")),
-        (OS::Windows8, Arch::X64) => Some(PathBuf::from("TargetPlatform/6.2.9200.0/lib/x64")),
-        // (OS::Windows8, Arch::ARM) => Some(PathBuf::from("TargetPlatform/6.2.9200.0/lib/ARM")),
-        (OS::Windows10, Arch::Win32) => {
-            Some(PathBuf::from("TargetPlatform/10.0.10240.0/lib/Win32"))
-        }
-        (OS::Windows10, Arch::X64) => Some(PathBuf::from("TargetPlatform/10.0.10240.0/lib/x64")),
-        (OS::Windows10, Arch::ARM64) => {
-            Some(PathBuf::from("TargetPlatform/10.0.10240.0/lib/ARM64"))
-        }
+        (OS::Windows8, Arch::Win32) => Some("TargetPlatform/6.2.9200.0/lib/Win32"),
+        (OS::Windows8, Arch::X64) => Some("TargetPlatform/6.2.9200.0/lib/x64"),
+        // (OS::Windows8, Arch::ARM) => Some("TargetPlatform/6.2.9200.0/lib/ARM"),
+        (OS::Windows10, Arch::Win32) => Some("TargetPlatform/10.0.10240.0/lib/Win32"),
+        (OS::Windows10, Arch::X64) => Some("TargetPlatform/10.0.10240.0/lib/x64"),
+        (OS::Windows10, Arch::ARM64) => Some("TargetPlatform/10.0.10240.0/lib/ARM64"),
 
-        (OS::Windows10_20H1, Arch::Win32) => {
-            Some(PathBuf::from("TargetPlatform/10.0.19041.0/lib/Win32"))
-        }
-        (OS::Windows10_20H1, Arch::X64) => {
-            Some(PathBuf::from("TargetPlatform/10.0.19041.0/lib/X64"))
-        }
-        (OS::Windows10_20H1, Arch::ARM64) => {
-            Some(PathBuf::from("TargetPlatform/10.0.19041.0/lib/ARM64"))
-        }
+        (OS::Windows10_20H1, Arch::Win32) => Some("TargetPlatform/10.0.19041.0/lib/Win32"),
+        (OS::Windows10_20H1, Arch::X64) => Some("TargetPlatform/10.0.19041.0/lib/X64"),
+        (OS::Windows10_20H1, Arch::ARM64) => Some("TargetPlatform/10.0.19041.0/lib/ARM64"),
         _ => None,
     }
+    .map(PathBuf::from)
 }
 
 pub fn get_yy_thunks_obj_path(os: OS, arch: Arch) -> Option<PathBuf> {
     match (os, arch) {
-        (OS::WindowsXP, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_WinXP.obj")),
-        (OS::WindowsXP, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_WinXP.obj")),
-        (OS::WindowsVista, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Vista.obj")),
-        (OS::WindowsVista, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Vista.obj")),
-        (OS::Windows7, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Win7.obj")),
-        (OS::Windows7, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Win7.obj")),
-        (OS::Windows8, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Win8.obj")),
-        (OS::Windows8, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Win8.obj")),
-        (OS::Windows10, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Win10.0.10240.obj")),
-        (OS::Windows10, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Win10.0.10240.obj")),
-        (OS::Windows10_20H1, Arch::Win32) => Some(PathBuf::from("objs/x86/YY_Thunks_for_Win10.0.19041.obj")),
-        (OS::Windows10_20H1, Arch::X64) => Some(PathBuf::from("objs/x64/YY_Thunks_for_Win10.0.19041.obj")),
+        (OS::WindowsXP, Arch::Win32) => Some("objs/x86/YY_Thunks_for_WinXP.obj"),
+        (OS::WindowsXP, Arch::X64) => Some("objs/x64/YY_Thunks_for_WinXP.obj"),
+        (OS::WindowsVista, Arch::Win32) => Some("objs/x86/YY_Thunks_for_Vista.obj"),
+        (OS::WindowsVista, Arch::X64) => Some("objs/x64/YY_Thunks_for_Vista.obj"),
+        (OS::Windows7, Arch::Win32) => Some("objs/x86/YY_Thunks_for_Win7.obj"),
+        (OS::Windows7, Arch::X64) => Some("objs/x64/YY_Thunks_for_Win7.obj"),
+        (OS::Windows8, Arch::Win32) => Some("objs/x86/YY_Thunks_for_Win8.obj"),
+        (OS::Windows8, Arch::X64) => Some("objs/x64/YY_Thunks_for_Win8.obj"),
+        (OS::Windows10, Arch::Win32) => Some("objs/x86/YY_Thunks_for_Win10.0.10240.obj"),
+        (OS::Windows10, Arch::X64) => Some("objs/x64/YY_Thunks_for_Win10.0.10240.obj"),
+        (OS::Windows10_20H1, Arch::Win32) => Some("objs/x86/YY_Thunks_for_Win10.0.19041.obj"),
+        (OS::Windows10_20H1, Arch::X64) => Some("objs/x64/YY_Thunks_for_Win10.0.19041.obj"),
         _ => None,
     }
+    .map(PathBuf::from)
 }
 
 pub fn get_os_version(os: OS, arch: Arch) -> Option<String> {

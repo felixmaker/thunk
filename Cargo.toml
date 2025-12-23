@@ -2,6 +2,10 @@
 members = [
 	"thunk-cli",
 	"thunk-rs",
-	"sample"
+	"sample",
+	"sample-tokio"
+]
+exclude = [
+	"sample-tokio-extreme"
 ]
 resolver = "2"

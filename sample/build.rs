@@ -1,3 +1,3 @@
 fn main() {
-    thunk::thunk();
+    let _ = thunk::thunk();
 }
