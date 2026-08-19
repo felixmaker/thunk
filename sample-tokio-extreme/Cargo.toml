@@ -1,0 +1,65 @@
+cargo-features = ["trim-paths", "profile-rustflags"]
+
+[package]
+name = "sample-tokio-extreme"
+version = "0.1.0"
+edition = "2021"
+
+[build-dependencies]
+thunk-rs = { path = "../thunk-rs", default-features = false, features = ["vista"] }
+
+[features]
+
+[dependencies]
+# anyhow = "1.0.89"
+libc_alloc = "1.0.7"
+press-btn-continue = "0.2.0"
+reqwest = { version = "0.12.8", features = ["rustls-tls-webpki-roots-no-provider", "charset", "http2"], default-features = false }
+tokio = { version = "1.40.0", features = ["rt-multi-thread", "net", "macros", "io-util"] }
+rustls = { version = "0.23.13", default-features = false, features = [
+    "custom-provider",
+    "hashbrown",
+    "std",
+    "tls12"
+] }
+rustls-rustcrypto = { version = "0.0.2-alpha", default-features = false, features = [
+    "alloc",
+    "kx-p256",
+    "ecdsa-p256",
+    "rsa-full",
+    "chacha20poly1305",
+    "tls12"
+] }
+webpki-roots = "0.26.6"
+rustls-pki-types = "1.10.0"
+derive_more = { version = "1.0.0", default-features = false, features = ["display", "debug", "deref", "from", "into", "error"] }
+tokio-rustls = { version = "0.26.0", default-features = false }
+ntapi = "0.4.1"
+compio = { version = "0.12.0", features = ["macros"] }
+
+[profile.release]
+incremental = true
+lto = "thin"
+# strip = "debuginfo"
+
+[profile.min-size-release]
+inherits = "release"
+codegen-units = 1
+lto = "fat"
+opt-level = "z"
+rustflags = ["-Zlocation-detail=none", "-Zfmt-debug=shallow"]
+
+[profile.release-strip]
+inherits = "release"
+strip = "symbols"
+
+[profile.min-size-release-strip]
+inherits = "min-size-release"
+strip = "symbols"
+
+[patch.crates-io]
+rustls = { path = "F:/Git/github.com/rustls/rustls/rustls" }
+rustls-rustcrypto = { path = "F:\\Git\\github.com\\stevefan1999-personal\\rustls-rustcrypto" }
+reqwest = { path = "F:/Git/github.com/stevefan1999-personal/reqwest" }
+mio = { path = "F:/Git/github.com/stevefan1999-personal/mio" }
+# socket2 = { path = "F:/Git/github.com/stevefan1999-personal/socket2" }

@@ -69,12 +69,12 @@ impl ThunkBuilder {
         }
 
         let subsystem_args =
-            subsystem.map(|x| format!("-Clink-args=/SUBSYSTEM:{},{}", x.to_string(), os_version));
+            subsystem.map(|x| format!("-Clink-args=/SUBSYSTEM:{},{}", x, os_version));
 
         let mut rust_flags = vec!["-L".into(), format!("{}", vc_ltl.to_string_lossy())];
 
         if let Some(args) = subsystem_args {
-            rust_flags.push(args.into());
+            rust_flags.push(args);
 
             if let Some(Subsystem::Windows) = subsystem {
                 rust_flags.push("-Clink-args=/ENTRY:mainCRTStartup".into())
@@ -139,8 +139,7 @@ impl Thunk {
 
         println!(
             "Start to build for Windows {}({}) using VC-LTL and YY-Thunks: ",
-            self.os.to_string(),
-            self.arch.to_string(),
+            self.os, self.arch,
         );
         println!(" * RUSTFLAGS = {}", rust_flags);
         println!(" * Command = cargo {}", cargo_args.join(" "));

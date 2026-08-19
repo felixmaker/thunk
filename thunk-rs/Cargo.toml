@@ -16,9 +16,21 @@ name = "thunk"
 path = "src/lib.rs"
 
 [dependencies]
+# native-download backend — only compiled when the feature is enabled
+reqwest = { version = "0.13.4", default-features = false, features = ["blocking", "default-tls"], optional = true }
+sevenz-rust2 = { version = "0.21.0", default-features = false, features = ["util"], optional = true }
+zip = { version = "8.6.0", default-features = false, features = ["deflate-flate2-zlib-rs"], optional = true }
 
 [features]
-default = ["xp"]
+default = ["xp", "default-download"]
+
+# Download backends — native-download takes priority if both are active
+default-download = ["external-download"]
+external-download = []
+native-download = ["dep:reqwest", "dep:sevenz-rust2", "dep:zip"]
+
+# Target OS versions
+win2k = []
 xp = []
 vista = []
 win7 = []
@@ -28,6 +40,7 @@ win10_19041 = []
 vc_ltl_only = []
 lib = []
 subsystem_windows = []
+windows_2000 = ["win2k"]
 windows_xp = ["xp"]
 windows_vista = ["vista"]
 win10 = ["win10_10240"]
